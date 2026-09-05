@@ -5,9 +5,6 @@ import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
 const config = {
 	kit: {
 		adapter: adapter(),
-		compilerOptions: {
-			runes: ({ filename }) => (filename.split(/[/\\]/).includes('node_modules') ? undefined : true)
-		},
 		typescript: {
 			config: (config) => {
 				config.include.push('../drizzle.config.ts');
