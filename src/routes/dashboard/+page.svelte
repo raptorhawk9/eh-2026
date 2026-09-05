@@ -1,9 +1,12 @@
 <script lang="ts">
 	import Login from '$lib/Login.svelte';
-
-    let props = $props();
+	let loggedIn = $state(false);
 </script>
 
-<div class="w-screen h-screen flex flex-col items-center justify-center bg-neutral-900">
-    <Login/>
-</div>
+{#if !loggedIn}
+	<div class="flex h-screen w-screen flex-col items-center justify-center bg-neutral-900">
+		<Login onSubmit={() => (loggedIn = true)} />
+	</div>
+{:else}
+	<div>Main Dashboard</div>
+{/if}
