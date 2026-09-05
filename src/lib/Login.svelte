@@ -13,7 +13,7 @@
 		<input id="username" name="username" type="text" />
 		<label class="text-white" for="password">Password</label>
 		<input id="password" name="username" type="password" />
-		<button class="border border-white text-white hover:cursor-pointer" type="submit">Submit</button
+		<button class="border border-white text-white font-semibold py-1.5 hover:cursor-pointer" type="submit">Submit</button
 		>
 	</form>
     </div>
