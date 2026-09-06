@@ -3,6 +3,7 @@
 	import SosButton from '$lib/SosButton.svelte';
 	import CheckIn from '$lib/CheckIn.svelte';
 	import { Check } from 'drizzle-orm/gel-core';
+	import Contacts from '$lib/Contacts.svelte';
 	/** @type {import('./$types').PageProps} */
 	let { data } = $props();
 </script>
@@ -13,6 +14,6 @@
 	</div>
 {:else}
 	<div class="h-screen w-screen text-white">
-		<div class="p-4 flex flex-col gap-4"><SosButton /><CheckIn /></div>
+		<div class="p-4 flex flex-col gap-4"><SosButton /><Contacts/><CheckIn /></div>
 	</div>
 {/if}
