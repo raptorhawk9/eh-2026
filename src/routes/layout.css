@@ -10,5 +10,6 @@
 }
 
 body {
+    background-color: #171717; /* aka bg-neutral-900 */
     font-family: 'Geist';
 }
