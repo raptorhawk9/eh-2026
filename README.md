@@ -1,5 +1,9 @@
 # sv
 
+## Gemini setup
+
+Set `GEMINI_API_KEY` in the server environment before using the AI draft and proximity warning endpoints.
+
 Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
 
 ## Creating a project

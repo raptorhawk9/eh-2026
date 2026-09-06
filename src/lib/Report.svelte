@@ -1,10 +1,5 @@
 <script lang="ts">
-	type HazardReport = {
-		address: string;
-		hazard: string;
-		platform: string;
-		details: string;
-	};
+	import { platforms, type HazardReport } from '$lib/report';
 
 	let { onSubmit }: { onSubmit: (report: HazardReport) => void } = $props();
 
@@ -26,7 +21,8 @@
 		let finalPlatform = platform;
 		if (platform === 'Other') finalPlatform = otherPlatform;
 
-		onSubmit({ address, hazard: finalHazard, platform: finalPlatform, details });
+		const loggedAt = new Date().toISOString();
+		onSubmit({ address, hazard: finalHazard, platform: finalPlatform, details, checkinAt: loggedAt, loggedAt });
 
 		address = '';
 		hazard = '';
@@ -69,12 +65,9 @@
 		<label for="platform">Platform</label>
 		<select id="platform" class="text-black" bind:value={platform}>
 			<option value="">Choose a platform</option>
-			<option>Uber</option>
-			<option>DoorDash</option>
-			<option>Lyft</option>
-			<option>Grubhub</option>
-			<option> Instacart</option>
-			<option>Other</option>
+			{#each platforms as option (option)}
+				<option value={option}>{option}</option>
+			{/each}
 		</select>
 		{#if platform === 'Other'}
 			<label for="other-platform">Enter the platform</label>
@@ -85,6 +78,7 @@
 				placeholder="Enter the platform name"
 			/>
 		{/if}
+		<p class="text-sm text-neutral-300">Check-in date and time are added automatically when this report is submitted.</p>
 
 		<label for="details">Details</label>
 		<textarea
