@@ -1,6 +1,7 @@
 <script lang="ts">
 	import Login from '$lib/Login.svelte';
 	import SosButton from '$lib/SosButton.svelte';
+	import Map from '$lib/Map.svelte';
 	import CheckIn from '$lib/CheckIn.svelte';
 	import Report from '$lib/Report.svelte';
 	import Contacts from '$lib/Contacts.svelte';
@@ -32,7 +33,9 @@
 			<SosButton />
 			<Contacts/>
 			<CheckIn />
-			<div class="flex gap-4">
+			<Map />
+
+<div class="flex gap-4">
 				<Report onSubmit={addReport} />
 				<ReportList {reports} />
 			</div>
