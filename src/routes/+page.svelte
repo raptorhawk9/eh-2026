@@ -1,12 +1,13 @@
 <script lang="ts">
 	import Login from '$lib/Login.svelte';
-	let loggedIn = $state(false);
+	/** @type {import('./$types').PageProps} */
+	let { data } = $props();
 </script>
 
-{#if !loggedIn}
+{#if !data.user}
 	<div class="flex h-screen w-screen flex-col items-center justify-center bg-neutral-900">
-		<Login onSubmit={() => (loggedIn = true)} />
+		<Login />
 	</div>
 {:else}
-	<div class="h-screen w-screen text-white bg-neutral-900">Main Dashboar</div>
+	<div class="h-screen w-screen bg-neutral-900 text-white">Main Dashboard</div>
 {/if}
