@@ -12,11 +12,13 @@ export async function askGemini(prompt: string): Promise<string> {
 	if (!apiKey) throw new Error('GEMINI_API_KEY is not configured');
 
 	let lastError = 'Gemini request failed';
+	const signal = AbortSignal.timeout(20000);
 	for (const model of geminiModels) {
 		const response = await fetch(
 			`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`,
 			{
 				method: 'POST',
+				signal,
 				headers: { 'content-type': 'application/json' },
 				body: JSON.stringify({
 					contents: [{ parts: [{ text: prompt }] }],
@@ -44,6 +46,9 @@ export async function askGemini(prompt: string): Promise<string> {
 }
 
 export function parseGeminiJson<T>(text: string): T {
-	const cleaned = text.replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/, '').trim();
+	const cleaned = text
+		.replace(/^```(?:json)?\s*/i, '')
+		.replace(/\s*```$/, '')
+		.trim();
 	return JSON.parse(cleaned) as T;
 }

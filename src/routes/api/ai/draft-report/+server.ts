@@ -1,12 +1,26 @@
 import { json } from '@sveltejs/kit';
 import { askGemini, parseGeminiJson } from '$lib/server/gemini';
 
-type DraftRequest = { address?: string; details?: string; platform?: string; checkinAt?: string };
-
-export async function POST({ request }) {
-	const body = (await request.json()) as DraftRequest;
-	if (!body.address?.trim() || !body.details?.trim()) {
-		return json({ error: 'Address and details are required.' }, { status: 400 });
+export async function POST({ request, locals }) {
+	if (!locals.user) return json({ error: 'Sign in to use BeaconAI.' }, { status: 401 });
+	const body = await request.json().catch(() => null);
+	if (
+		!body ||
+		typeof body.address !== 'string' ||
+		!body.address.trim() ||
+		body.address.length > 500 ||
+		typeof body.details !== 'string' ||
+		!body.details.trim() ||
+		body.details.length > 5000 ||
+		(body.platform !== undefined &&
+			(typeof body.platform !== 'string' || body.platform.length > 100)) ||
+		(body.checkinAt !== undefined &&
+			(typeof body.checkinAt !== 'string' || !Number.isFinite(Date.parse(body.checkinAt))))
+	) {
+		return json(
+			{ error: 'Provide a valid address, note, platform, and check-in time.' },
+			{ status: 400 }
+		);
 	}
 
 	try {
@@ -19,6 +33,12 @@ Platform: ${body.platform || 'Unknown'}
 Check-in started at: ${body.checkinAt || 'Unknown'}
 `);
 		const draft = parseGeminiJson<{ hazard?: string; details?: string }>(text);
+		if (
+			!draft ||
+			(draft.hazard !== undefined && typeof draft.hazard !== 'string') ||
+			(draft.details !== undefined && typeof draft.details !== 'string')
+		)
+			throw new Error('Invalid draft');
 		return json({
 			draft: {
 				address: body.address.trim(),
@@ -29,7 +49,10 @@ Check-in started at: ${body.checkinAt || 'Unknown'}
 				loggedAt: new Date().toISOString()
 			}
 		});
-	} catch (error) {
-		return json({ error: error instanceof Error ? error.message : 'Unable to draft report.' }, { status: 503 });
+	} catch {
+		return json(
+			{ error: 'BeaconAI could not draft your report. Please try again.' },
+			{ status: 503 }
+		);
 	}
 }

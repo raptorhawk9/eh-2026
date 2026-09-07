@@ -3,13 +3,66 @@
 @plugin '@tailwindcss/typography';
 
 @font-face {
-    font-family: 'Geist';
-    src: url('/fonts/Geist-VariableFont_wght.ttf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
+	font-family: 'Geist';
+	src: url('/fonts/Geist-VariableFont_wght.ttf') format('truetype');
+	font-weight: 100 900;
+	font-style: normal;
+	font-display: swap;
+}
+
+:root {
+	font-family: 'Geist', system-ui, sans-serif;
+	color: #172033;
+	background: #f8f7f3;
+	color-scheme: light;
+}
+
+html {
+	scroll-behavior: smooth;
 }
 
 body {
-    background-color: #171717; /* aka bg-neutral-900 */
-    font-family: 'Geist';
+	margin: 0;
+	min-width: 320px;
+	min-height: 100dvh;
+	background: #f8f7f3;
+	color: #172033;
+}
+
+::selection {
+	background: #cdd9ff;
+	color: #0f2caa;
+}
+
+:focus-visible {
+	outline: 3px solid #1238dd;
+	outline-offset: 3px;
+}
+
+* {
+	scrollbar-color: #aebce9 #eef0f6;
+	scrollbar-width: thin;
+}
+*::-webkit-scrollbar {
+	width: 12px;
+	height: 12px;
+}
+*::-webkit-scrollbar-track {
+	background: #eef0f6;
+}
+*::-webkit-scrollbar-thumb {
+	background: #aebce9;
+	border: 3px solid #eef0f6;
+	border-radius: 999px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	*,
+	*::before,
+	*::after {
+		scroll-behavior: auto !important;
+		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
+		transition-duration: 0.01ms !important;
+	}
 }
